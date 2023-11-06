@@ -293,9 +293,9 @@ def draw_display():
             player.jump_left = False
     for obstacle in obs_lvl1:
         obstacle.draw(win)
-        if player.hitbox.colliderect(obstacle.hitbox):
-            player.x = 10
-            player.y = 515
+        # if player.hitbox.colliderect(obstacle.hitbox):
+        #     player.x = 10
+        #     player.y = 515
     if not on_ground:
         player.y += player.vely
         player.vely += gravity
@@ -326,15 +326,15 @@ road8 = Road(424, 94, 143, 2)
 road_lvl1 = [road1, road2, road3 , road4, road5,
             road6, road7, road8]
 
-road01 = Road(295, 492, 59, 2)
-road02 = Road(30, 409, 220, 2)
+# road01 = Road(295, 492, 59, 2)
+road02 = Road(30, 420, 220, 2)
 road03 = Road(335, 350, 220, 2)
 road04 = Road(226, 293, 59, 2)
 road05 = Road(28, 208, 112, 2)
 road06 = Road(132, 88, 112, 2)
 road07 = Road(310, 153, 112, 2)
 road08 = Road(488, 76, 112, 2)
-road_lvl2 = [road01, road02, road03, road04, road05,
+road_lvl2 = [ road02, road03, road04, road05,
              road06, road07, road08]
 
 road001 = Road(516, 470, 30, 2)
@@ -362,15 +362,15 @@ grounds_lvl1 = [ground1, ground2, ground3, ground4, ground5,
                 ground6, ground7, ground8]
 
 
-ground01 = Ground(295, 492, 59, 32)
-ground02 = Ground(30, 416, 220, 35)
+# ground01 = Ground(295, 492, 59, 32)
+ground02 = Ground(30, 425, 220, 27)
 ground03 = Ground(335, 350, 220, 32)
 ground04 = Ground(226, 290, 59, 32)
 ground05 = Ground(28, 208, 112, 32)
 ground06 = Ground(132, 88, 112, 32)
 ground07 = Ground(310, 162, 112, 29)
 ground08 = Ground(488, 76, 112, 32)
-grounds_lvl2 = [ground01, ground02, ground03, ground04, ground05,
+grounds_lvl2 = [ground02, ground03, ground04, ground05,
                 ground06, ground07, ground08]
 
 ground001 = Ground(516, 470, 30, 30)
