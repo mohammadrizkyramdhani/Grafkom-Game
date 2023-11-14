@@ -113,8 +113,8 @@ class Hero:
             self.vely -= 4
             if self.x < 0:
                 self.x = 0
-            elif self.x > win_width - 84:
-                self.x = win_width - 84
+            elif self.x > win_width - 55:
+                self.x = win_width - 55
         elif self.vely < -10:
             self.jump_right = False
             self.jump_left = False
@@ -215,7 +215,7 @@ class Obstacle:
 def draw_display():
     global win, background, background_lvl2, background_lvl3, grounds_lvl1, grounds_lvl2, grounds_lvl3, \
         finish1, finish2, finish3, land1, land2, land3, on_ground, current_level, road_lvl1, road_lvl2, road_lvl3,\
-        obs_lvl1
+        obs_lvl1, obs_lvl2
 
 
     win.fill((0, 0, 0))
@@ -230,10 +230,13 @@ def draw_display():
                 road_lvl1 = road_lvl2
                 finish1 = finish2
                 land1 = land2
+                obs_lvl1 = obs_lvl2
                 for ground in grounds_lvl2:
                     ground.draw(win)
                 for road in road_lvl2:
                     road.draw(win)
+                for obstacle in obs_lvl2:
+                    obstacle.draw(win)
                 pygame.mixer.music.stop()
                 music_lvl2 = 'Die_Fantasie.mp3'
                 pygame.mixer.music.load(music_lvl2)
@@ -281,8 +284,6 @@ def draw_display():
             on_ground = True
             player.y = ground.hitbox.bottom
             player.vely = 0
-            # player.jump_right = False
-            # player.jump_left = False
     for road in road_lvl1:
         road.draw(win)
         if player.hitbox.colliderect(road.hitbox):
@@ -296,6 +297,7 @@ def draw_display():
         # if player.hitbox.colliderect(obstacle.hitbox):
         #     player.x = 10
         #     player.y = 515
+
     if not on_ground:
         player.y += player.vely
         player.vely += gravity
@@ -393,7 +395,13 @@ land2 = Land(0, 572, 600, 29)
 land3 = Land(0, 572, 600, 30)
 
 obs1 = Obstacle(234, 440, 51, 15)
-obs_lvl1 = [obs1]
+obs2 = Obstacle(264, 304, 51, 15)
+obs_lvl1 = [obs1, obs2]
+
+obs01 = Obstacle(335, 350, 51, 15)
+obs02 = Obstacle(28, 208, 51, 15)
+obs03 = Obstacle(132, 88, 51, 15)
+obs_lvl2 = [obs01, obs02, obs03]
 
 clock = pygame.time.Clock()
 
