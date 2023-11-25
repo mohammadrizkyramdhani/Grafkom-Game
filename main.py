@@ -212,16 +212,17 @@ class Obstacle:
 
 
 # Display
+current_level = 1
 def draw_display():
     global win, background, background_lvl2, background_lvl3, grounds_lvl1, grounds_lvl2, grounds_lvl3, \
-        finish1, finish2, finish3, land1, land2, land3, on_ground, current_level, road_lvl1, road_lvl2, road_lvl3,\
+        finish1, finish2, finish3, land1, land2, land3, on_ground, current_level, road_lvl1, road_lvl2, road_lvl3, \
         obs_lvl1, obs_lvl2
-
 
     win.fill((0, 0, 0))
     win.blit(background, (0, 0))
-    current_level = 1
+    finish_sound = pygame.mixer.Sound('Sound_Finish.mp3')
     if player.hitbox.colliderect(finish1.hitbox):
+        finish_sound.play()
         if current_level == 1:
             current_level = 2
             background = background_lvl2
@@ -254,10 +255,13 @@ def draw_display():
                 road_lvl1 = road_lvl3
                 finish1 = finish3
                 land1 = land3
+                obs_lvl1 = obs_lvl3
                 for ground in grounds_lvl3:
                     ground.draw(win)
                 for road in road_lvl3:
                     road.draw(win)
+                for obstacle in obs_lvl3:
+                    obstacle.draw(win)
                 pygame.mixer.music.stop()
                 music_lvl3 = 'Awareness.mp3'
                 pygame.mixer.music.load(music_lvl3)
@@ -267,7 +271,7 @@ def draw_display():
 
     if player.hitbox.colliderect(finish3.hitbox):
         pass
-    
+
     if current_level == 1:
         finish1.draw(win)
     elif current_level == 2:
@@ -275,17 +279,27 @@ def draw_display():
     elif current_level == 3:
         finish3.draw(win)
 
+    def play_music():
+        if current_level == 1:
+            pygame.mixer.music.load('Sadness_2.mp3')
+        elif current_level == 2:
+            pygame.mixer.music.load('Die_Fantasie.mp3')
+        elif current_level == 3:
+            pygame.mixer.music.load('Awareness.mp3')
+
+        pygame.mixer.music.play(-1)
+
     player.draw(win)
     on_ground = False
     gravity = 2
     for ground in grounds_lvl1:
-        ground.draw(win)
+        # ground.draw(win)
         if player.hitbox.colliderect(ground.hitbox):
             on_ground = True
             player.y = ground.hitbox.bottom
             player.vely = 0
     for road in road_lvl1:
-        road.draw(win)
+        # road.draw(win)
         if player.hitbox.colliderect(road.hitbox):
             on_ground = True
             player.y = road.y - player.hitbox.height
@@ -293,16 +307,49 @@ def draw_display():
             player.jump_right = False
             player.jump_left = False
     for obstacle in obs_lvl1:
-        obstacle.draw(win)
-        # if player.hitbox.colliderect(obstacle.hitbox):
-        #     player.x = 10
-        #     player.y = 515
+        # obstacle.draw(win)
+        if player.hitbox.colliderect(obstacle.hitbox):
+            player.x = 10
+            player.y = 515
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load('Game_Over.mp3')
+            pygame.mixer.music.play(0)
+
+            try_again_font = pygame.font.Font(None, 46)
+            exit_font = pygame.font.Font(None, 46)
+
+            try_again_text = try_again_font.render("Try Again", True, (255, 255, 255))
+            exit_text = exit_font.render("Exit", True, (255, 255, 255))
+            try_again_rect = try_again_text.get_rect(center=(win_width // 2, win_height // 2 + 50))
+            exit_rect = exit_text.get_rect(center=(win_width // 2, win_height // 2 + 130))
+
+            lose_screen = True
+            while lose_screen:
+                win.fill((100, 100, 0))
+                win.blit(try_again_text, try_again_rect)
+                win.blit(exit_text, exit_rect)
+                pygame.display.update()
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        quit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        mouse_pos = pygame.mouse.get_pos()
+                        if try_again_rect.collidepoint(mouse_pos):
+                            lose_screen = False
+                            pygame.mixer.music.stop()
+                            play_music()
+                            break
+                        if exit_rect.collidepoint(mouse_pos):
+                            pygame.quit()
+                            quit()
 
     if not on_ground:
         player.y += player.vely
         player.vely += gravity
 
-    land1.draw(win)
+    # land1.draw(win)
 
     if player.hitbox.colliderect(land1.hitbox):
         on_ground = True
@@ -370,7 +417,7 @@ ground03 = Ground(335, 350, 220, 32)
 ground04 = Ground(226, 290, 59, 32)
 ground05 = Ground(28, 208, 112, 32)
 ground06 = Ground(132, 88, 112, 32)
-ground07 = Ground(310, 162, 112, 29)
+ground07 = Ground(310, 155, 112, 29)
 ground08 = Ground(488, 76, 112, 32)
 grounds_lvl2 = [ground02, ground03, ground04, ground05,
                 ground06, ground07, ground08]
@@ -398,11 +445,15 @@ obs1 = Obstacle(234, 440, 51, 15)
 obs2 = Obstacle(264, 304, 51, 15)
 obs_lvl1 = [obs1, obs2]
 
-obs01 = Obstacle(335, 350, 51, 15)
-obs02 = Obstacle(28, 208, 51, 15)
-obs03 = Obstacle(132, 88, 51, 15)
+obs01 = Obstacle(360, 346, 51, 15)
+obs02 = Obstacle(70, 203, 51, 15)
+obs03 = Obstacle(332, 148, 42, 15)
 obs_lvl2 = [obs01, obs02, obs03]
 
+obs001= Obstacle(220, 323, 47, 15)
+obs002 = Obstacle(118, 205, 51, 15)
+obs003 = Obstacle(305, 138, 51, 15)
+obs_lvl3 = [obs001, obs002, obs003]
 clock = pygame.time.Clock()
 
 
