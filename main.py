@@ -51,6 +51,7 @@ bg_start = pygame.transform.scale(pygame.image.load('UI start.png'), (win_width,
 background = pygame.transform.scale(pygame.image.load('forest_bg.png'), (win_width, win_height))
 background_lvl2 = pygame.transform.scale(pygame.image.load('castil_bg.png'), (win_width, win_height))
 background_lvl3 = pygame.transform.scale(pygame.image.load('moon_bg.png'), (win_width, win_height))
+bg_gover = pygame.transform.scale(pygame.image.load('Gover_UI.png'), (win_width, win_height))
 
 
 
@@ -127,7 +128,7 @@ class Hero:
 
     def draw(self, win):
         self.hitbox = pygame.Rect(self.x + 13, self.y + 2 + 0, 40, 64)
-        pygame.draw.rect(win, (40, 255, 255), self.hitbox, 1)
+        # pygame.draw.rect(win, (40, 255, 255), self.hitbox, 1)
         if self.face_left:
             if self.jump_left:
                 win.blit(j_left[self.stepIndex], (self.x, self.y))
@@ -272,12 +273,12 @@ def draw_display():
     if player.hitbox.colliderect(finish3.hitbox):
         pass
 
-    if current_level == 1:
-        finish1.draw(win)
-    elif current_level == 2:
-        finish2.draw(win)
-    elif current_level == 3:
-        finish3.draw(win)
+    # if current_level == 1:
+    #     finish1.draw(win)
+    # elif current_level == 2:
+    #     finish2.draw(win)
+    # elif current_level == 3:
+    #     finish3.draw(win)
 
     def play_music():
         if current_level == 1:
@@ -315,17 +316,17 @@ def draw_display():
             pygame.mixer.music.load('Game_Over.mp3')
             pygame.mixer.music.play(0)
 
-            try_again_font = pygame.font.Font(None, 46)
-            exit_font = pygame.font.Font(None, 46)
+            try_again_font = pygame.font.Font(None, 42)
+            exit_font = pygame.font.Font(None, 42)
 
-            try_again_text = try_again_font.render("Try Again", True, (255, 255, 255))
-            exit_text = exit_font.render("Exit", True, (255, 255, 255))
-            try_again_rect = try_again_text.get_rect(center=(win_width // 2, win_height // 2 + 50))
-            exit_rect = exit_text.get_rect(center=(win_width // 2, win_height // 2 + 130))
+            try_again_text = try_again_font.render("Try Again", True, (0, 0, 0))
+            exit_text = exit_font.render("Exit", True, (0, 0, 0))
+            try_again_rect = try_again_text.get_rect(center=(win_width // 2, win_height // 2 + 110))
+            exit_rect = exit_text.get_rect(center=(win_width // 2, win_height // 2 + 165))
 
             lose_screen = True
             while lose_screen:
-                win.fill((100, 100, 0))
+                win.blit(bg_gover, (0, 0))
                 win.blit(try_again_text, try_again_rect)
                 win.blit(exit_text, exit_rect)
                 pygame.display.update()
@@ -401,7 +402,7 @@ road_lvl3 = [road001, road002, road003, road004, road005,
 ground1 = Ground(167, 450, 138, 23)
 ground2 = Ground(366, 450, 50, 23)
 ground3 = Ground(462, 365, 76, 23)
-ground4 = Ground(190, 310, 147, 23)
+ground4 = Ground(190, 310, 147, 19)
 ground5 = Ground(0, 235, 143, 35)
 ground6 = Ground(198, 173, 77, 23)
 ground7 = Ground(330, 133, 77, 23)
